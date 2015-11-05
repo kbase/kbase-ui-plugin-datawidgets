@@ -10,16 +10,24 @@ define([
             root = node;
             container = node.appendChild(document.createElement('div'));
         }
+        function start(params) {
+            
+        }
         function run(params) {
             container.innerHTML = 'Hello, I\'m a Panel';
         }
         function detach() {
             root.removeChild(container);
         }
+        function stop() {
+            
+        }
         
         return {
             attach: attach,
+            start: start,
             run: run,
+            stop: stop,
             detach: detach
         };
     }
