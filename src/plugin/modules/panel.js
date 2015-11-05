@@ -1,7 +1,6 @@
 /*global define*/
 /*jslint white: true, browser: true*/
-define([
-    
+define([    
 ], function () {
     'use strict';
     

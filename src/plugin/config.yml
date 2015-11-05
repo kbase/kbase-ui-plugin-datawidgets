@@ -1,27 +1,27 @@
 ## Welcome Panel
 ---
 package:
-    name: MYPLUGIN
-    description: A description of the plugin
-    author: Your Name (or KBase?)
-    date: April 1, 2015
+    name: datawidgets
+    description: New style data widgets
+    author: Erik Pearson
+    date: November 5, 2015
     version: 0.0.1
 source:
     modules:
         -
-            module: kb_myplugin_panel
+            module: kb_datawidgets_panel
             file: panel
 install:
     widgets:
         - 
-            module: kb_myplugin_panel
-            id: kb_myplugin_panel
+            module: kb_datawidgets_panel
+            id: kb_datawidgets_panel
             type: factory
     # Set up a route to install that widget in the main body view
     routes:
         -
             path: ['test']
-            widget: test
+            widget: kb_datawidgets_panel
     # Set up a menu item to invoke the path above
     menu:
         -
