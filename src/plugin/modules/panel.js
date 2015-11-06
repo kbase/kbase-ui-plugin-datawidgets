@@ -22,6 +22,7 @@ define([
             return widgetSet.start(params);
         }
         function run(params) {
+            runtime.send('ui', 'setTitle', 'Hi, I am the data widgets plugin');
             container.innerHTML = 'Hello, I\'m a Panel';
             return widgetSet.run(params);
         }
