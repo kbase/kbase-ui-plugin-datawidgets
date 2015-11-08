@@ -1,13 +1,32 @@
 /*global define*/
 /*jslint white: true, browser: true*/
 define([
-    'kb_common_widgetSet'
-], function (WidgetSet) {
+    'kb_widget_widgetSet',
+    'kb_common_html'
+], function (WidgetSet, html) {
     'use strict';
     
     function factory(config) {
         var root, container, runtime = config.runtime,
             widgetSet = WidgetSet.make({runtime: runtime});
+        
+        // Widget Implementation
+        
+        function render() {
+            var div = html.tag('div'),
+                p = html.tag('p');
+            return div([
+                p('Hi, I am still a panel, but becoming more sophisticated!'),
+                p('Below you can find the widgets'),
+                div({class: 'row'}, [
+                    div({class: 'col-md-3'}, 'Sorry, nothing here yet'),
+                    div({class: 'col-md-3'}, 'Sorry, nothing here yet'),
+                    div({class: 'col-md-3'}, 'Sorry, nothing here yet')                    
+                ])
+            ]);
+        }
+        
+        // Widget Interface
         
         function init(config) {
             return widgetSet.init(config);
@@ -23,7 +42,7 @@ define([
         }
         function run(params) {
             runtime.send('ui', 'setTitle', 'Hi, I am the data widgets plugin');
-            container.innerHTML = 'Hello, I\'m a Panel';
+            container.innerHTML = render();
             return widgetSet.run(params);
         }
         function stop() {
