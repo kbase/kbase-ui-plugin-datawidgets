@@ -2,7 +2,8 @@
 /*jslint white: true, browser: true*/
 define([
     'kb_widget_widgetSet',
-    'kb_common_html'
+    'kb_common_html',
+    'bootstrap'
 ], function (WidgetSet, html) {
     'use strict';
     
@@ -19,7 +20,7 @@ define([
                 p('Hi, I am still a panel, but becoming more sophisticated!'),
                 p('Below you can find the widgets'),
                 div({class: 'row'}, [
-                    div({class: 'col-md-3'}, 'Sorry, nothing here yet'),
+                    div({class: 'col-md-3', id: widgetSet.makeWidget('kb_datawidgets_widget')}),
                     div({class: 'col-md-3'}, 'Sorry, nothing here yet'),
                     div({class: 'col-md-3'}, 'Sorry, nothing here yet')                    
                 ])
@@ -35,6 +36,7 @@ define([
         function attach(node) {
             root = node;
             container = node.appendChild(document.createElement('div'));
+            container.innerHTML = render();
             return widgetSet.attach(container);
         }
         function start(params) {
@@ -42,7 +44,6 @@ define([
         }
         function run(params) {
             runtime.send('ui', 'setTitle', 'Hi, I am the data widgets plugin');
-            container.innerHTML = render();
             return widgetSet.run(params);
         }
         function stop() {

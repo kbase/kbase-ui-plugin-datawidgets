@@ -11,11 +11,18 @@ source:
         -
             module: kb_datawidgets_panel
             file: panel
+        -
+            modle: kb_datawidgets_widget
+            file: widget
 install:
     widgets:
         - 
             module: kb_datawidgets_panel
             id: kb_datawidgets_panel
+            type: factory
+        -
+            modle: kb_datawidgets_widget
+            id: kb_datawidgets_widget
             type: factory
     # Set up a route to install that widget in the main body view
     routes:
