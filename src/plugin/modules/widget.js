@@ -1,7 +1,7 @@
 /*global define*/
 /*jslint white:true,browser:true*/
 define([
-    'kb_widget_dataWdiget'
+    'kb/widget/dataWdiget'
 ], function (DataWidget) {
     'use strict';
     

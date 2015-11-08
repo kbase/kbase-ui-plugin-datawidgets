@@ -1,7 +1,7 @@
 /*global define*/
 /*jslint white: true, browser: true*/
 define([
-    'kb_widget_widgetSet',
+    'kb/widget/widgetSet',
     'kb_common_html',
     'bootstrap'
 ], function (WidgetSet, html) {
