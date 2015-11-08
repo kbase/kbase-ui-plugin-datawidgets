@@ -15,7 +15,7 @@ define([
         function render() {
             var div = html.tag('div'),
                 p = html.tag('p');
-            return div([
+            return div({class: 'container-fluid'}, [
                 p('Hi, I am still a panel, but becoming more sophisticated!'),
                 p('Below you can find the widgets'),
                 div({class: 'row'}, [
