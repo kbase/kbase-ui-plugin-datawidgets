@@ -21,7 +21,7 @@ define([
                 p('Hi, I am still a panel, but becoming more sophisticated!'),
                 p('Below you can find the widgets'),
                 div({class: 'row'}, [
-                    div({class: 'col-md-3', id: widgetSet.addWidget('kb_datawidgets_widget2')}),
+                    div({class: 'col-md-3', id: widgetSet.addWidget('kb_datawidgets_widget1')}),
                     div({class: 'col-md-3'}, 'Sorry, nothing here yet'),
                     div({class: 'col-md-3'}, 'Sorry, nothing here yet')                    
                 ])
