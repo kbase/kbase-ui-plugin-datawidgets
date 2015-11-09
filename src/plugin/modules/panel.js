@@ -43,7 +43,7 @@ define([
             container = node.appendChild(document.createElement('div'));
             console.log('CONTAINER1');
             console.log(container);
-            container.innerHTML = render();
+            container.innerHTML = layout;
             return widgetSet.attach(container);
         }
         function start(params) {
