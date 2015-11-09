@@ -9,7 +9,8 @@ define([
     
     function factory(config) {
         var root, container, runtime = config.runtime,
-            widgetSet = WidgetSet.make({runtime: runtime});
+            widgetSet = WidgetSet.make({runtime: runtime}),
+            layout;
         
         // Widget Implementation
         
@@ -26,6 +27,10 @@ define([
                 ])
             ]);
         }
+        
+        layout = render();
+        
+        
         
         // Widget Interface
         

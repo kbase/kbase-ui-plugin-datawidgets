@@ -17,6 +17,8 @@ define([
     }
     
     return {
-        make: factory
+        make: function (config) {
+            return factory(config);
+        }
     };    
 });
