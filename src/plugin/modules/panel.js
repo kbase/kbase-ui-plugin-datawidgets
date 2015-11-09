@@ -41,6 +41,8 @@ define([
         function attach(node) {
             root = node;
             container = node.appendChild(document.createElement('div'));
+            console.log('CONTAINER1');
+            console.log(container);
             container.innerHTML = render();
             return widgetSet.attach(container);
         }
@@ -56,6 +58,8 @@ define([
         }
         function detach() {
             if (root && container) {
+                console.log('CONTAINER2');
+                console.log(container);
                 root.removeChild(container);
             }
             return widgetSet.detach();
