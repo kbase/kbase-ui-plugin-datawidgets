@@ -14,6 +14,9 @@ source:
         -
             module: kb_datawidgets_widget
             file: widget
+        -
+            module: kb_datawidgets_widget2
+            file: widget2
 install:
     widgets:
         - 
@@ -23,6 +26,10 @@ install:
         -
             module: kb_datawidgets_widget
             id: kb_datawidgets_widget
+            type: factory
+        -
+            module: kb_datawidgets_widget2
+            id: kb_datawidgets_widget2
             type: factory
     # Set up a route to install that widget in the main body view
     routes:
