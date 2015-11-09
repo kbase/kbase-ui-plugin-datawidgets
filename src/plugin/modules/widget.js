@@ -18,7 +18,10 @@ define([
     
     return {
         make: function (config) {
-            return factory(config);
+            var x = factory(config);
+            console.log('RETURNING');
+            console.log(x);
+            return x;
         }
     };    
 });
