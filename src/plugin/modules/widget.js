@@ -6,7 +6,7 @@ define([
     'use strict';
     
     function factory(config) {
-        return DataWidget({
+        return DataWidget.make({
             runtime: config.runtime,
             on: {
                 render: function () {
