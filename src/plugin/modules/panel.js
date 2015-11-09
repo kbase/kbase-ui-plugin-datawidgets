@@ -55,7 +55,7 @@ define([
             return widgetSet.stop();
         }
         function detach() {
-            if (root) {
+            if (root && container) {
                 root.removeChild(container);
             }
             return widgetSet.detach();
