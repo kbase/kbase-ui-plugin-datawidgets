@@ -79,7 +79,7 @@ define([
                 },
                 attach: function (container) {
                     var containerId = html.genId(),
-                        canvasId = html.getnId(),
+                        canvasId = html.getId(),
                         div = html.tag('div'),
                         canvas = html.tag('canvas'),
                         layout = div({id: containerId}, [
