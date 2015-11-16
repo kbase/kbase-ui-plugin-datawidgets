@@ -79,7 +79,7 @@ define([
                 },
                 attach: function (container) {
                     var containerId = html.genId(),
-                        canvasId = html.getId(),
+                        canvasId = html.genId(),
                         div = html.tag('div'),
                         canvas = html.tag('canvas'),
                         layout = div({id: containerId}, [
@@ -89,7 +89,7 @@ define([
                 },
                 render: function () {
                     var data = this.get('data');
-                    return 'Wow, I finall got all that!, e.g.: ' + data.tree.objectInfo.id;
+                    return 'Wow, I finally got all that!, e.g.: ' + data.tree.objectInfo.id;
                    
                 }
             }
