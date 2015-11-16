@@ -75,7 +75,7 @@ define([
                                 refList: refList,
                                 refToInfoMap: refToInfoMap,
                             });                            
-                        })
+                        }.bind(this));
                 },
                 attach: function (container) {
                     var containerId = html.genId(),
