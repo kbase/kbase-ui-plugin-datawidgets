@@ -22,8 +22,7 @@ define([
                 p('Below you can find the widgets'),
                 div({class: 'row'}, [
                     div({class: 'col-md-3', id: widgetSet.addWidget('kb_datawidgets_widget')}),
-                    div({class: 'col-md-3'}, 'Sorry, nothing here yet'),
-                    div({class: 'col-md-3'}, 'Sorry, nothing here yet')                    
+                    div({class: 'col-md-9', id: widgetSet.addWidget('kb_datawidgets_expression_expressionSeries')})                    
                 ])
             ]);
         }
@@ -41,8 +40,6 @@ define([
         function attach(node) {
             root = node;
             container = node.appendChild(document.createElement('div'));
-            console.log('CONTAINER1');
-            console.log(container);
             container.innerHTML = layout;
             return widgetSet.attach(container);
         }
@@ -58,8 +55,6 @@ define([
         }
         function detach() {
             if (root && container) {
-                console.log('CONTAINER2');
-                console.log(container);
                 root.removeChild(container);
             }
             return widgetSet.detach();

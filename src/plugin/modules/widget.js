@@ -19,8 +19,6 @@ define([
     return {
         make: function (config) {
             var x = factory(config);
-            console.log('RETURNING');
-            console.log(x);
             return x;
         }
     };    

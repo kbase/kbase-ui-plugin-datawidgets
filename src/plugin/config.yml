@@ -17,6 +17,31 @@ source:
         -
             module: kb_datawidgets_widget2
             file: widget2
+        -
+            module: kb_datawidgets_expression_expressionSeries
+            file: expression/expressionSeries
+        -
+            module: kb_datawidgets_contigset_contigSet
+            file: contigset/contigSet
+         # TREES
+        
+        -
+            module: kb_datawidgets_trees_tree
+            file: trees/tree
+        # This hodgepodge is used by trees.
+        -
+            module: kb_dataview_knhx
+            file: trees/lib/knhx
+        -
+            module: kb_dataview_popit
+            file: trees/lib/popit
+        -
+            module: kb_dataview_canvastext
+            file: trees/lib/canvastext
+        -
+            module: kb_dataview_easyTree
+            file: trees/lib/easyTree
+            
 install:
     widgets:
         - 
@@ -31,16 +56,93 @@ install:
             module: kb_datawidgets_widget2
             id: kb_datawidgets_widget2
             type: factory
+        # WIDGETS
+        -
+            module: kb_datawidgets_expression_expressionSeries
+            id: kb_datawidgets_expression_expressionSeries
+            type: factory
+        -
+            module: kb_datawidgets_contigset_contigSet
+            id: kb_datawidgets_contigset_contigSet
+            type: factory
+        -
+            module: kb_datawidgets_trees_tree
+            id: kb_datawidgets_trees_tree
+            type: factory
+            
     # Set up a route to install that widget in the main body view
     routes:
         -
-            path: ['test']
+            path:
+                -
+                    test
+                -
+                    type: param
+                    name: workspaceId
+                -
+                    type: param
+                    name: objectId
+                -
+                    type: param
+                    name: objectVersion
             widget: kb_datawidgets_panel
     # Set up a menu item to invoke the path above
     menu:
         -
             name: test
             definition:
-                path: test
+                path: test/78/38/1
                 label: Test!
                 icon: smile-o
+    type:
+         # EXPRESSION
+        -
+            type:
+                module: KBaseExpression
+                name: ExpressionSeries
+                version: any
+            icon:  
+                type: fontAwesome
+                classes: ['fa-tachometer']
+            viewers:
+                -
+                    title: Data View
+                    default: true
+                    widget:
+                        name: kb_datawidgets_expression_expressionSeries                        
+                    panel: false
+                    
+        # GENOMES
+        
+        -
+            type:
+                module: KBaseGenomes
+                name: ContigSet
+                version: any
+            icon: 
+                type: fontAwesome
+                classes: ['fa-align-justify']
+            viewers:
+                -
+                    title: Data View
+                    default: true
+                    widget: 
+                        name: kb_datawidgets_contigset_contigSet
+                    panel: false  
+         # TREES
+        
+        -
+            type:
+                module: KBaseTrees
+                name: Tree
+                version: any
+            icon:   
+                type: kbase
+                classes: ['icon-tree', 'kb-data-icon-dnudge']
+            viewers:
+                -
+                    title: Data View
+                    default: true
+                    widget:
+                        name: kb_datawidgets_trees_tree
+                    panel: false
