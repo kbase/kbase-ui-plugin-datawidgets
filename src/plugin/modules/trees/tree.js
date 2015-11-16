@@ -56,7 +56,7 @@ define([
                                     objectId: data.objectInfo.id,
                                     objectVersion: data.objectInfo.version
                                 }),
-                                tree = data.tree;
+                                tree = data.data;
                             if (tree.ws_refs) {
                                 refList = Object.keys(tree.ws_refs).map(function (key) {
                                     return {ref: tree.ws_refs[key].g[0]};
