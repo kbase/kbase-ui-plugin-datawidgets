@@ -24,9 +24,6 @@ define([
             runtime: config.runtime,
             title: 'Tree Data View',
             on: {
-                initialContent: function () {
-                    return html.loading('Loading tree...');
-                },
                 fetch: function () {
                     var workspaceClient = new Workspace(this.runtime.getConfig('services.workspace.url'), {
                         token: this.runtime.service('session').getAuthToken()
@@ -36,48 +33,52 @@ define([
                         }),
                         ref = makeObjectRef(this.get('params')),
                         // these thread through and are build in the data api calls.
-                        treeObject,
                         refList = [],
                         refToInfoMap = {};
+                    
+                    this.setTitle(html.loading('Loading Tree Data ...'));
 
                     return workspaceClient.get_objects([{ref: ref}])
                         .then(function (data) {
                             if (data.length === 1) {
-                                treeObject = data[0];
-                                treeObject.objectInfo = serviceUtils.object_info_to_object(treeObject.info);
-                                return treeObject;
+                                return data[0].data;
                             } else {
                                 throw new Error('Invalid results');
                             }
                         })
-                        .then(function (data) {
-                                var treeRef = makeObjectRef({
-                                    workspaceId: data.objectInfo.wsid,
-                                    objectId: data.objectInfo.id,
-                                    objectVersion: data.objectInfo.version
-                                }),
-                                tree = data.data;
+                        .then(function (tree) {
+                            // Build a list of references, then fetch the object info for them ...
                             if (tree.ws_refs) {
                                 refList = Object.keys(tree.ws_refs).map(function (key) {
                                     return {ref: tree.ws_refs[key].g[0]};
                                 });
                             }
-                            return workspaceClient.get_object_info_new({objects: refList});
+                            return [tree, workspaceClient.get_object_info_new({objects: refList})];
                         })
-                        .then(function (objectInfoList) {
+                        .spread(function (tree, objectInfoList) {
+                            // ... and then map them by their original ref.
                             var i;
                             for (i = 0; i < objectInfoList.length; i += 1) {
                                 refToInfoMap[refList[i].ref] = objectInfoList[i];
                             }
-                            
+
                             this.set('data', {
-                                tree: treeObject,
+                                tree: tree,
                                 refList: refList,
                                 refToInfoMap: refToInfoMap,
-                            });                            
+                            });
+
                         }.bind(this));
                 },
-                attach: function (container) {
+                /*
+                 * as soon as possible, which should be right after attachment, 
+                 * place this layout markup. Any specific places, which are nodes
+                 * with ids, may be returned in the places property, and later
+                 * accessed as getPlace('place').
+                 * 
+                 * Note: this is WITHIN the widget native layout.
+                 */
+                layout: function (container) {
                     var containerId = html.genId(),
                         canvasId = html.genId(),
                         div = html.tag('div'),
@@ -85,12 +86,48 @@ define([
                         layout = div({id: containerId}, [
                             canvas({id: canvasId, style: {maxHeight: (config.height || defaultHeight) - 85, overflow: 'scroll'}})
                         ]);
-                    container.innerHTML = layout;
+                    return {
+                        content: layout,
+                        places: {
+                            canvas: {
+                                id: canvasId
+                            }
+                        }
+                    };
                 },
                 render: function () {
-                    var data = this.get('data');
-                    return 'Wow, I finally got all that!, e.g.: ' + data.tree.objectInfo.id;
-                   
+                    var data = this.get('data'),
+                        canvas = this.getPlace('canvas');
+                    if (!data) {
+                        return;
+                    }
+                    this.setTitle('Tree Data View');
+                    new EasyTree(canvas.id, data.tree.tree, data.tree.default_node_labels,
+                        function (node) {
+                            if ((!data.tree.ws_refs || (!data.tree.ws_refs[node.id]))) {
+                                var nodeName = data.tree.default_node_labels[node.id],
+                                    url;
+                                if (nodeName.indexOf('/') > 0) {
+                                    url = '#genes/' + this.get('params').workspaceId + '/' + nodeName;
+                                    console.log('URL');
+                                    console.log(url);
+                                }
+                                return;
+                            }
+                            var ref = data.tree.ws_refs[node.id].g[0],
+                                objectInfo = data.refToInfoMap[ref];
+                            if (objectInfo) {
+                                url = '#dataview/' + objectInfo[7] + '/' + objectInfo[1];
+                                console.log('URL');
+                                console.log(url);
+                            }
+                        },
+                        function (node) {
+                            if (node.id && node.id.indexOf('user') === 0) {
+                                return '#0000ff';
+                            }
+                            return null;
+                        });
                 }
             }
         });

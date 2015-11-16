@@ -529,7 +529,7 @@ define(['kb_dataview_canvastext', 'kb_dataview_popit'], function (CanvasTextFunc
                 if (p.x > scale)
                     scale = p.x;
             }
-            if (scale == 0.0) {
+            if (scale === 0.0) {
                 is_real = false;
             }
         }

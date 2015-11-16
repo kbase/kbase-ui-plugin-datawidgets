@@ -145,4 +145,4 @@ install:
                     default: true
                     widget:
                         name: kb_datawidgets_trees_tree
-                    panel: false
+                    panel: true
