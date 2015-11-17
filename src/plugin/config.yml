@@ -41,6 +41,10 @@ source:
         -
             module: kb_dataview_easyTree
             file: trees/lib/easyTree
+        # Assembly
+        -
+            module: kb_datawidgets_assembly_assemblyInput
+            file: assembly/assemblyInput
             
 install:
     widgets:
@@ -68,6 +72,11 @@ install:
         -
             module: kb_datawidgets_trees_tree
             id: kb_datawidgets_trees_tree
+            type: factory
+        # ASSEMBLY
+        -
+            modules: kb_datawidgets_assembly_assemblyInput
+            id: kb_datawidgets_assembly_assemblyInput
             type: factory
             
     # Set up a route to install that widget in the main body view
@@ -145,4 +154,20 @@ install:
                     default: true
                     widget:
                         name: kb_datawidgets_trees_tree
-                    panel: true
+                    panel: false
+        # ASSEMBLY
+        -
+            type:
+                module: KBaseAssembly
+                name: AssemblyInput
+                version: any
+            icon: 
+                type: kbase
+                classes: ['icon-reads', 'kb-data-icon-dnudge']  
+            viewers:
+                -
+                    title: Data View
+                    default: true
+                    widget:
+                        name: kb_datawidgets_assembly_assemblyInput
+                    panel: true              

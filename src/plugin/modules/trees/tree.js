@@ -8,7 +8,7 @@ define([
     'kb_service_userAndJobState',
     'kb_dataview_easyTree',
     'kb_service_utils',
-    'kb/widget/bases/dataWidget',
+    'kb/widget/bases/dataWidget'
 ], function (Promise, uuid, html, Workspace, UserAndJobState, EasyTree, serviceUtils, DataWidget) {
     'use strict';
 
@@ -59,12 +59,11 @@ define([
                             // ... and then map them by their original ref.
                             var i;
                             for (i = 0; i < objectInfoList.length; i += 1) {
-                                refToInfoMap[refList[i].ref] = objectInfoList[i];
+                                refToInfoMap[refList[i].ref] = serviceUtils.object_info_to_object(objectInfoList[i]);
                             }
 
                             this.set('data', {
                                 tree: tree,
-                                refList: refList,
                                 refToInfoMap: refToInfoMap,
                             });
 
@@ -109,7 +108,7 @@ define([
                                     url;
                                 if (nodeName.indexOf('/') > 0) {
                                     url = '#genes/' + this.get('params').workspaceId + '/' + nodeName;
-                                    console.log('URL');
+                                    console.log('URL1');
                                     console.log(url);
                                 }
                                 return;
@@ -117,9 +116,10 @@ define([
                             var ref = data.tree.ws_refs[node.id].g[0],
                                 objectInfo = data.refToInfoMap[ref];
                             if (objectInfo) {
-                                url = '#dataview/' + objectInfo[7] + '/' + objectInfo[1];
-                                console.log('URL');
-                                console.log(url);
+                                // Either way works...
+                                // url = '#dataview/' + objectInfo.wsid + '/' + objectInfo.id;
+                                url = '#dataview/' + objectInfo.ws + '/' + objectInfo.name;
+                                window.open(url, '_blank');
                             }
                         },
                         function (node) {
