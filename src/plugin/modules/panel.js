@@ -2,7 +2,7 @@
 /*jslint white: true, browser: true*/
 define([
     'kb/widget/widgetSet',
-    'kb_common_html',
+    'kb/common/html',
     'bootstrap'
 ], function (WidgetSet, html) {
     'use strict';

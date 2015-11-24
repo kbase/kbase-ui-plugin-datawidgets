@@ -4,7 +4,7 @@ define([
     'kb/widget/bases/dataWidget',
     'kb_service_workspace',
     'kb_service_utils',
-    'kb_common_html'
+    'kb/common/html'
 ], function (DataWidget, Workspace, serviceUtil, html) {
     'use strict';
 

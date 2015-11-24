@@ -3,7 +3,7 @@
 define([
     'bluebird',
     'uuid',
-    'kb_common_html',
+    'kb/common/html',
     'kb_service_workspace',
     'kb_service_userAndJobState',
     'kb_dataview_easyTree',

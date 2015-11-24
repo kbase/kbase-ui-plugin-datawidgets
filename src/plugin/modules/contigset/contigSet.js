@@ -4,7 +4,7 @@ define([
     'bluebird',
     'jquery',
     'numeral',
-    'kb_common_html',
+    'kb/common/html',
     'kb_widgetBases_dataWidget',
     'kb_service_workspace',
     'kb_service_utils',
