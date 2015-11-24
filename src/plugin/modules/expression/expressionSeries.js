@@ -2,8 +2,8 @@
 /*jslint white:true,browser:true*/
 define([
     'kb/widget/bases/dataWidget',
-    'kb_service_workspace',
-    'kb_service_utils',
+    'kb/service/client/workspace',
+    'kb/service/utils',
     'kb/common/html'
 ], function (DataWidget, Workspace, serviceUtil, html) {
     'use strict';

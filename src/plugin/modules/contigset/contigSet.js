@@ -6,8 +6,8 @@ define([
     'numeral',
     'kb/common/html',
     'kb/widget/bases/dataWidget',
-    'kb_service_workspace',
-    'kb_service_utils',
+    'kb/service/client/workspace',
+    'kb/service/utils',
     'datatables_bootstrap'
 ], function (Promise, $, numeral, html, DataWidget, Workspace, serviceUtils) {
     'use strict';

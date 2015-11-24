@@ -4,10 +4,10 @@ define([
     'bluebird',
     'uuid',
     'kb/common/html',
-    'kb_service_workspace',
-    'kb_service_userAndJobState',
+    'kb/service/client/workspace',
+    'kb/service/client/UserAndJobState',
     'kb_dataview_easyTree',
-    'kb_service_utils',
+    'kb/service/utils',
     'kb/widget/bases/dataWidget'
 ], function (Promise, uuid, html, Workspace, UserAndJobState, EasyTree, serviceUtils, DataWidget) {
     'use strict';
