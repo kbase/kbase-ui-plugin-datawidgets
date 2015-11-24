@@ -5,7 +5,7 @@ define([
     'jquery',
     'numeral',
     'kb/common/html',
-    'kb_widgetBases_dataWidget',
+    'kb/widget/bases/dataWidget',
     'kb_service_workspace',
     'kb_service_utils',
     'datatables_bootstrap'
