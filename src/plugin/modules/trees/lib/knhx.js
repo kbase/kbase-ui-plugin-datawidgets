@@ -67,7 +67,10 @@
  white: true,
 bitwise: true
  */
-define(['kb_dataview_canvastext', 'kb_dataview_popit'], function (CanvasTextFunctions, popmenu) {
+define([
+    './canvastext', 
+    './popit'
+], function (CanvasTextFunctions, popmenu) {
     'use strict';
     function kn_new_node() { // private method
         return {parent: null, child: [], name: "", meta: "", d: -1.0, hl: false, hidden: false};

@@ -20,27 +20,6 @@ source:
         -
             module: kb_datawidgets_expression_expressionSeries
             file: expression/expressionSeries
-        -
-            module: kb_datawidgets_contigset_contigSet
-            file: contigset/contigSet
-         # TREES
-        
-        -
-            module: kb_datawidgets_trees_tree
-            file: trees/tree
-        # This hodgepodge is used by trees.
-        -
-            module: kb_dataview_knhx
-            file: trees/lib/knhx
-        -
-            module: kb_dataview_popit
-            file: trees/lib/popit
-        -
-            module: kb_dataview_canvastext
-            file: trees/lib/canvastext
-        -
-            module: kb_dataview_easyTree
-            file: trees/lib/easyTree
         # Assembly
         -
             module: kb_datawidgets_assembly_assemblyInput
@@ -66,11 +45,11 @@ install:
             id: kb_datawidgets_expression_expressionSeries
             type: factory
         -
-            module: kb_datawidgets_contigset_contigSet
+            module: plugins/datawidgets/modules/contigset/contigSet/widget
             id: kb_datawidgets_contigset_contigSet
             type: factory
         -
-            module: kb_datawidgets_trees_tree
+            module: plugins/datawidgets/modules/trees/tree
             id: kb_datawidgets_trees_tree
             type: factory
         # ASSEMBLY
@@ -137,7 +116,7 @@ install:
                     default: true
                     widget: 
                         name: kb_datawidgets_contigset_contigSet
-                    panel: false  
+                    panel: true  
          # TREES
         
         -

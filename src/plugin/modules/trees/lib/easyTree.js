@@ -7,8 +7,8 @@
  bitwise: true
  */
 define([
-    'kb_dataview_knhx',
-    'kb_dataview_canvastext'
+    './knhx',
+    './canvastext'
 ],
     function (knhx, CanvasTextFunctions) {
         'use strict';

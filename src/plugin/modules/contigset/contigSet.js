@@ -61,6 +61,7 @@ define([
                                     'name', 'source', 'source_id', 'type']
                             }])
                             .then(function (data) {
+                                
                                 widget.setState('contigset', data[0].data);
                             });
                     });
