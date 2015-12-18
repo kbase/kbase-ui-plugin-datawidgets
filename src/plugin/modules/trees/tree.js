@@ -22,9 +22,10 @@ define([
             defaultHeight = 600;
         return DataWidget.make({
             runtime: config.runtime,
-            title: 'Tree Data View',
+            title: 'Tree Data Viewy',
             on: {
                 fetch: function () {
+                    console.log('fetching...');
                     var workspaceClient = new Workspace(this.runtime.getConfig('services.workspace.url'), {
                         token: this.runtime.service('session').getAuthToken()
                     }),
@@ -40,6 +41,7 @@ define([
 
                     return workspaceClient.get_objects([{ref: ref}])
                         .then(function (data) {
+                            console.log('got objects');
                             if (data.length === 1) {
                                 return data[0].data;
                             } else {
@@ -53,15 +55,32 @@ define([
                                     return {ref: tree.ws_refs[key].g[0]};
                                 });
                             }
-                            return [tree, workspaceClient.get_object_info_new({objects: refList})];
+                            console.log('HERE');
+                            console.log(tree);
+                            console.log(refList);
+                            return Promise.all([tree, workspaceClient.get_object_info_new({objects: refList}).then(function (result) {
+                                    console.log('GOT RESULT');
+                                    console.log(result);
+                                    return result;
+                            }).catch(function (err) {
+                                console.log('NEW ERROR'); console.log(err);
+                            })]);
                         })
                         .spread(function (tree, objectInfoList) {
+                            console.log('got object info');
                             // ... and then map them by their original ref.
                             var i;
                             for (i = 0; i < objectInfoList.length; i += 1) {
                                 refToInfoMap[refList[i].ref] = serviceUtils.object_info_to_object(objectInfoList[i]);
                             }
 
+                            console.log('setting data to ');
+                            
+                            var data = {
+                                tree: tree,
+                                refToInfoMap: refToInfoMap,
+                            };
+                            console.log(data);
                             this.set('data', {
                                 tree: tree,
                                 refToInfoMap: refToInfoMap,
@@ -78,6 +97,7 @@ define([
                  * Note: this is WITHIN the widget native layout.
                  */
                 layout: function (container) {
+                    console.log('in layout');
                     var containerId = html.genId(),
                         canvasId = html.genId(),
                         div = html.tag('div'),
@@ -95,12 +115,13 @@ define([
                     };
                 },
                 render: function () {
+                    console.log('in render');
                     var data = this.get('data'),
                         canvas = this.getPlace('canvas');
                     if (!data) {
                         return;
                     }
-                    this.setTitle('Tree Data View');
+                    this.setTitle('Tree Data Viewx');
                     new EasyTree(canvas.id, data.tree.tree, data.tree.default_node_labels,
                         function (node) {
                             if ((!data.tree.ws_refs || (!data.tree.ws_refs[node.id]))) {
