@@ -2,14 +2,13 @@
 /*jslint white: true*/
 define([
     'bluebird',
-    'uuid',
     'kb/common/html',
     'kb/service/client/workspace',
     'kb/service/client/UserAndJobState',
     './lib/easyTree',
     'kb/service/utils',
     'kb/widget/bases/dataWidget'
-], function (Promise, uuid, html, Workspace, UserAndJobState, EasyTree, serviceUtils, DataWidget) {
+], function (Promise, html, Workspace, UserAndJobState, EasyTree, serviceUtils, DataWidget) {
     'use strict';
 
     function makeObjectRef(obj) {
