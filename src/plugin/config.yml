@@ -25,6 +25,14 @@ source:
             module: kb_datawidgets_assembly_assemblyInput
             file: assembly/assemblyInput
             
+        # Catalog
+        -
+            module: kb_datawidgets_catalogPanel
+            file: catalogPanel
+        -
+            module: kb_datawidgets_catalog
+            file: catalog/catalog
+            
 install:
     widgets:
         - 
@@ -54,8 +62,17 @@ install:
             type: factory
         # ASSEMBLY
         -
-            modules: kb_datawidgets_assembly_assemblyInput
+            module: kb_datawidgets_assembly_assemblyInput
             id: kb_datawidgets_assembly_assemblyInput
+            type: factory
+        #
+        -
+            module: kb_datawidgets_catalogPanel
+            id: kb_datawidgets_catalogPanel
+            type: factory
+        -
+            module: kb_datawidgets_catalog
+            id: kb_datawidgets_catalog
             type: factory
             
     # Set up a route to install that widget in the main body view
@@ -74,6 +91,11 @@ install:
                     type: param
                     name: objectVersion
             widget: kb_datawidgets_panel
+        -
+            path:
+                -
+                    catalog
+            widget: kb_datawidgets_catalogPanel   
     # Set up a menu item to invoke the path above
     menu:
         -
@@ -82,6 +104,12 @@ install:
                 path: test/78/38/1
                 label: Test!
                 icon: smile-o
+        -
+            name: catalog
+            definition:
+                path: catalog
+                label: Catalog Test
+                icon: book
     type:
          # EXPRESSION
         -
