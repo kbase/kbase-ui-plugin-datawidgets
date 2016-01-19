@@ -2,7 +2,7 @@
 /*jslint white: true*/
 
 define([
-    'kb/service/client/Catalog'
+    'kb/service/client/catalog'
 ], function (Catalog) {
     function factory(config) {
         var parent, container, runtime = config.runtime;

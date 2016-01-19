@@ -4,7 +4,7 @@ define([
     'bluebird',
     'kb/common/html',
     'kb/service/client/workspace',
-    'kb/service/client/UserAndJobState',
+    'kb/service/client/userAndJobState',
     './lib/easyTree',
     'kb/service/utils',
     'kb/widget/bases/dataWidget'
