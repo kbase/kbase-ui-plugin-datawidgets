@@ -120,12 +120,13 @@ define([
                     if (!data) {
                         return;
                     }
+                    console.log(data);
                     this.setTitle('Tree Data Viewx');
                     new EasyTree(canvas.id, data.tree.tree, data.tree.default_node_labels,
                         function (node) {
+                            var url;
                             if ((!data.tree.ws_refs || (!data.tree.ws_refs[node.id]))) {
-                                var nodeName = data.tree.default_node_labels[node.id],
-                                    url;
+                                var nodeName = data.tree.default_node_labels[node.id];
                                 if (nodeName.indexOf('/') > 0) {
                                     url = '#genes/' + this.get('params').workspaceId + '/' + nodeName;
                                     console.log('URL1');
@@ -133,8 +134,11 @@ define([
                                 }
                                 return;
                             }
+                            console.log('HERE!!');
                             var ref = data.tree.ws_refs[node.id].g[0],
                                 objectInfo = data.refToInfoMap[ref];
+                            console.log(ref);
+                            console.log(objectInfo);
                             if (objectInfo) {
                                 // Either way works...
                                 // url = '#dataview/' + objectInfo.wsid + '/' + objectInfo.id;
@@ -143,6 +147,8 @@ define([
                             }
                         },
                         function (node) {
+                            console.log('THERE!');
+                            console.log(node);
                             if (node.id && node.id.indexOf('user') === 0) {
                                 return '#0000ff';
                             }
