@@ -162,19 +162,3 @@ install:
                     widget:
                         name: kb_datawidgets_trees_tree
                     panel: false
-        # ASSEMBLY
-        -
-            type:
-                module: KBaseAssembly
-                name: AssemblyInput
-                version: any
-            icon: 
-                type: kbase
-                classes: ['icon-reads', 'kb-data-icon-dnudge']  
-            viewers:
-                -
-                    title: Data View
-                    default: true
-                    widget:
-                        name: kb_datawidgets_assembly_assemblyInput
-                    panel: true              
