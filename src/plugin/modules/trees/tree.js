@@ -21,14 +21,13 @@ define([
             defaultHeight = 600;
         return DataWidget.make({
             runtime: config.runtime,
-            title: 'Tree Data Viewy',
+            title: 'Tree Data View',
             on: {
                 fetch: function () {
-                    console.log('fetching...');
                     var workspaceClient = new Workspace(this.runtime.getConfig('services.workspace.url'), {
                         token: this.runtime.service('session').getAuthToken()
                     }),
-                        ujsClient = new UserAndJobState(this.runtime.getConfig('services.ujs.url'), {
+                        ujsClient = new UserAndJobState(this.runtime.getConfig('services.user_job_state.url'), {
                             token: this.runtime.service('session').getAuthToken()
                         }),
                         ref = makeObjectRef(this.get('params')),
@@ -40,7 +39,6 @@ define([
 
                     return workspaceClient.get_objects([{ref: ref}])
                         .then(function (data) {
-                            console.log('got objects');
                             if (data.length === 1) {
                                 return data[0].data;
                             } else {
@@ -54,32 +52,24 @@ define([
                                     return {ref: tree.ws_refs[key].g[0]};
                                 });
                             }
-                            console.log('HERE');
-                            console.log(tree);
-                            console.log(refList);
                             return Promise.all([tree, workspaceClient.get_object_info_new({objects: refList}).then(function (result) {
-                                    console.log('GOT RESULT');
-                                    console.log(result);
                                     return result;
                             }).catch(function (err) {
-                                console.log('NEW ERROR'); console.log(err);
+                                console.error('NEW ERROR'); 
+                                console.error(err);
                             })]);
                         })
                         .spread(function (tree, objectInfoList) {
-                            console.log('got object info');
                             // ... and then map them by their original ref.
                             var i;
                             for (i = 0; i < objectInfoList.length; i += 1) {
                                 refToInfoMap[refList[i].ref] = serviceUtils.object_info_to_object(objectInfoList[i]);
                             }
 
-                            console.log('setting data to ');
-                            
                             var data = {
                                 tree: tree,
                                 refToInfoMap: refToInfoMap,
                             };
-                            console.log(data);
                             this.set('data', {
                                 tree: tree,
                                 refToInfoMap: refToInfoMap,
@@ -96,7 +86,6 @@ define([
                  * Note: this is WITHIN the widget native layout.
                  */
                 layout: function (container) {
-                    console.log('in layout');
                     var containerId = html.genId(),
                         canvasId = html.genId(),
                         div = html.tag('div'),
@@ -114,14 +103,12 @@ define([
                     };
                 },
                 render: function () {
-                    console.log('in render');
                     var data = this.get('data'),
                         canvas = this.getPlace('canvas');
                     if (!data) {
                         return;
                     }
-                    console.log(data);
-                    this.setTitle('Tree Data Viewx');
+                    this.setTitle('Tree Data View');
                     new EasyTree(canvas.id, data.tree.tree, data.tree.default_node_labels,
                         function (node) {
                             var url;
@@ -129,16 +116,11 @@ define([
                                 var nodeName = data.tree.default_node_labels[node.id];
                                 if (nodeName.indexOf('/') > 0) {
                                     url = '#genes/' + this.get('params').workspaceId + '/' + nodeName;
-                                    console.log('URL1');
-                                    console.log(url);
                                 }
                                 return;
                             }
-                            console.log('HERE!!');
                             var ref = data.tree.ws_refs[node.id].g[0],
                                 objectInfo = data.refToInfoMap[ref];
-                            console.log(ref);
-                            console.log(objectInfo);
                             if (objectInfo) {
                                 // Either way works...
                                 // url = '#dataview/' + objectInfo.wsid + '/' + objectInfo.id;
@@ -147,8 +129,6 @@ define([
                             }
                         },
                         function (node) {
-                            console.log('THERE!');
-                            console.log(node);
                             if (node.id && node.id.indexOf('user') === 0) {
                                 return '#0000ff';
                             }
