@@ -66,14 +66,6 @@ install:
             id: kb_datawidgets_assembly_assemblyInput
             type: factory
         #
-        -
-            module: kb_datawidgets_catalogPanel
-            id: kb_datawidgets_catalogPanel
-            type: factory
-        -
-            module: kb_datawidgets_catalog
-            id: kb_datawidgets_catalog
-            type: factory
             
     # Set up a route to install that widget in the main body view
     routes:
@@ -91,11 +83,6 @@ install:
                     type: param
                     name: objectVersion
             widget: kb_datawidgets_panel
-        -
-            path:
-                -
-                    catalog
-            widget: kb_datawidgets_catalogPanel   
     # Set up a menu item to invoke the path above
     menu:
         -
