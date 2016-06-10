@@ -24,15 +24,6 @@ source:
         -
             module: kb_datawidgets_assembly_assemblyInput
             file: assembly/assemblyInput
-            
-        # Catalog
-        -
-            module: kb_datawidgets_catalogPanel
-            file: catalogPanel
-        -
-            module: kb_datawidgets_catalog
-            file: catalog/catalog
-            
 install:
     widgets:
         - 
@@ -91,12 +82,6 @@ install:
                 path: test/78/38/1
                 label: Test!
                 icon: smile-o
-        -
-            name: catalog
-            definition:
-                path: catalog
-                label: Catalog Test
-                icon: book
     type:
          # EXPRESSION
         -
