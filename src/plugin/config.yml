@@ -95,7 +95,7 @@ install:
             viewers:
                 -
                     title: Data View
-                    default: true
+                    default: false
                     widget:
                         name: kb_datawidgets_expression_expressionSeries                        
                     panel: false
