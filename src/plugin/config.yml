@@ -75,13 +75,13 @@ install:
                     name: objectVersion
             widget: kb_datawidgets_panel
     # Set up a menu item to invoke the path above
-    menu:
-        -
-            name: test
-            definition:
-                path: test/78/38/1
-                label: Test!
-                icon: smile-o
+    # menu:
+    #    -
+    #        name: test
+    #        definition:
+    #            path: test/78/38/1
+    #            label: Test!
+    #            icon: smile-o
     type:
          # EXPRESSION
         -
@@ -119,18 +119,18 @@ install:
                     panel: true  
          # TREES
         
-        -
-            type:
-                module: KBaseTrees
-                name: Tree
-                version: any
-            icon:   
-                type: kbase
-                classes: ['icon-tree', 'kb-data-icon-dnudge']
-            viewers:
-                -
-                    title: Data View
-                    default: true
-                    widget:
-                        name: kb_datawidgets_trees_tree
-                    panel: false
+        #-
+        #    type:
+        #        module: KBaseTrees
+        #        name: Tree
+        #        version: any
+        #    icon:   
+        #        type: kbase
+        #        classes: ['icon-tree', 'kb-data-icon-dnudge']
+        #    viewers:
+        #        -
+        #            title: Data View
+        #            default: false
+        #            widget:
+        #                name: kb_datawidgets_trees_tree
+        #            panel: false
