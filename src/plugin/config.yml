@@ -7,56 +7,44 @@ package:
     date: November 5, 2015
     version: 0.0.1
 source:
-    modules:
-        -
-            module: kb_datawidgets_panel
-            file: panel
-        -
-            module: kb_datawidgets_widget
-            file: widget
-        -
-            module: kb_datawidgets_widget2
-            file: widget2
-        -
-            module: kb_datawidgets_expression_expressionSeries
-            file: expression/expressionSeries
-        # Assembly
-        -
-            module: kb_datawidgets_assembly_assemblyInput
-            file: assembly/assemblyInput
+    modules:        
 install:
     widgets:
         - 
-            module: kb_datawidgets_panel
+            module: panel
             id: kb_datawidgets_panel
             type: factory
         -
-            module: kb_datawidgets_widget
+            module: widget
             id: kb_datawidgets_widget
             type: factory
         -
-            module: kb_datawidgets_widget2
+            module: widget2
             id: kb_datawidgets_widget2
             type: factory
         # WIDGETS
         -
-            module: kb_datawidgets_expression_expressionSeries
+            module: expression/expressionSeries
             id: kb_datawidgets_expression_expressionSeries
             type: factory
         -
-            module: plugins/datawidgets/modules/contigset/contigSet/widget
+            module: contigset/contigSet/widget
             id: kb_datawidgets_contigset_contigSet
             type: factory
         -
-            module: plugins/datawidgets/modules/trees/tree
+            module: trees/tree
             id: kb_datawidgets_trees_tree
             type: factory
         # ASSEMBLY
         -
-            module: kb_datawidgets_assembly_assemblyInput
+            module: assembly/assemblyInput
             id: kb_datawidgets_assembly_assemblyInput
             type: factory
-        #
+        # GENOME UTIL
+        -
+            module: genomeUtil/blastOutput
+            id: kb_datawidgets_blastOutput
+            type: factory
             
     # Set up a route to install that widget in the main body view
     routes:
@@ -117,6 +105,34 @@ install:
                     widget: 
                         name: kb_datawidgets_contigset_contigSet
                     panel: true  
+        -
+            type:
+                module: GenomeUtil
+                name: BlastOutput
+            icon:
+                type: fontAwesome
+                classes: ['fa-align-justify']
+            viewers:
+                -
+                    title: Data View
+                    default: true
+                    widget:
+                        name: kb_datawidgets_blastOutput
+                    panel: true
+        -
+            type:
+                module: GenomeUtil
+                name: BLAST_output
+            icon:
+                type: fontAwesome
+                classes: ['fa-align-justify']
+            viewers:
+                -
+                    title: Data View
+                    default: true
+                    widget:
+                        name: kb_datawidgets_blastOutput
+                    panel: true
          # TREES
         
         #-
