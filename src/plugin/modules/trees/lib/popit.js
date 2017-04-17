@@ -3,14 +3,7 @@
  * stay intact for legal use Visit http://www.dynamicdrive.com/ for full
  * source code.
  */
-/*global
- define, console
- */
-/*jslint
- browser: true,
- white: true
- */
-define([], function () {
+define([], function() {
     'use strict';
     /*
     document.write('<style type="text/css"><!-- \
@@ -29,7 +22,7 @@ define([], function () {
 */
 
 
-    var listenEvent = function (o, e, f) {
+    var listenEvent = function(o, e, f) {
         if (o.addEventListener) {
             o.addEventListener(e, f, false);
         } else {
@@ -37,10 +30,11 @@ define([], function () {
         }
     };
 
-    var popmenu = function () {
+    var popmenu = function() {
         var ie = document.all && !window.opera;
-        var timeout, pmo = null, timeBeg;
-        var w3c_contains = function (a, b) { // Determines if 1 element in contained in another- by Brainjar.com	
+        var timeout, pmo = null,
+            timeBeg;
+        var w3c_contains = function(a, b) { // Determines if 1 element in contained in another- by Brainjar.com	
             while (b.parentNode) {
                 b = b.parentNode;
                 if (b === a) {
@@ -49,7 +43,7 @@ define([], function () {
             }
             return false;
         };
-        this.createMenu = function (clickHandler) {
+        this.createMenu = function(clickHandler) {
             //pmo = $('<div id="popdiv" style="position: absolute; background-color: #fcfcfc; border: 1px solid #ccc; z-index: 100; visibility: hidden; font-size: 12px;"></div>');
             //pmo.on('mouseover', popmenu.clear);
             //pmo.on('mouseout', popmenu.autoHide);
@@ -67,36 +61,36 @@ define([], function () {
             document.body.appendChild(pmo);
             // $(document.body).append(pmo);
         };
-        this.clear = function () {
+        this.clear = function() {
             if (timeout) {
                 clearTimeout(timeout);
             }
         };
-        this.hide = function () {
+        this.hide = function() {
             if (pmo) {
                 pmo.style.visibility = "hidden";
             }
         };
-        this.delayedHide = function () {
-            timeout = setTimeout(function () {
+        this.delayedHide = function() {
+            timeout = setTimeout(function() {
                 popmenu.hide();
             }, 500);
         };
-        this.clickHide = function (e) {
-            if (timeBeg && (new Date().getTime()) - timeBeg > 500 && pmo
-                && (e.pageX < pmo.offsetLeft || e.pageX > pmo.offsetLeft + pmo.offsetWidth
-                    || e.pageY < pmo.offsetTop || e.pageY > pmo.offsetTop + pmo.offsetHeight)) {
+        this.clickHide = function(e) {
+            if (timeBeg && (new Date().getTime()) - timeBeg > 500 && pmo &&
+                (e.pageX < pmo.offsetLeft || e.pageX > pmo.offsetLeft + pmo.offsetWidth ||
+                    e.pageY < pmo.offsetTop || e.pageY > pmo.offsetTop + pmo.offsetHeight)) {
                 popmenu.hide(e);
             }
         };
-        this.autoHide = function (e) {
+        this.autoHide = function(e) {
             if (ie && !pmo.contains(e.toElement)) {
                 popmenu.hide();
             } else if (e.currentTarget !== e.relatedTarget && !w3c_contains(e.currentTarget, e.relatedTarget)) {
                 popmenu.hide();
             }
         };
-        this.show = function (e, which, optWidth, clickHandler) {
+        this.show = function(e, which, optWidth, clickHandler) {
             var ieo = (document.compatMode && document.compatMode.indexOf("CSS") !== -1) ?
                 document.documentElement : document.body;
             this.clear();

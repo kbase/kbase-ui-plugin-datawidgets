@@ -1,14 +1,12 @@
-/*global define*/
-/*jslint white: true*/
 define([
     'bluebird',
-    'kb/common/html',
-    'kb/service/client/workspace',
-    'kb/service/client/userAndJobState',
+    'kb_common/html',
+    'kb_service/client/workspace',
+    'kb_service/client/userAndJobState',
     './lib/easyTree',
-    'kb/service/utils',
-    'kb/widget/bases/dataWidget'
-], function (Promise, html, Workspace, UserAndJobState, EasyTree, serviceUtils, DataWidget) {
+    'kb_service/utils',
+    'kb_widget/bases/dataWidget'
+], function(Promise, html, Workspace, UserAndJobState, EasyTree, serviceUtils, DataWidget) {
     'use strict';
 
     function makeObjectRef(obj) {
@@ -23,10 +21,10 @@ define([
             runtime: config.runtime,
             title: 'Tree Data View',
             on: {
-                fetch: function () {
+                fetch: function() {
                     var workspaceClient = new Workspace(this.runtime.getConfig('services.workspace.url'), {
-                        token: this.runtime.service('session').getAuthToken()
-                    }),
+                            token: this.runtime.service('session').getAuthToken()
+                        }),
                         ujsClient = new UserAndJobState(this.runtime.getConfig('services.user_job_state.url'), {
                             token: this.runtime.service('session').getAuthToken()
                         }),
@@ -34,32 +32,32 @@ define([
                         // these thread through and are build in the data api calls.
                         refList = [],
                         refToInfoMap = {};
-                    
+
                     this.setTitle(html.loading('Loading Tree Data ...'));
 
-                    return workspaceClient.get_objects([{ref: ref}])
-                        .then(function (data) {
+                    return workspaceClient.get_objects([{ ref: ref }])
+                        .then(function(data) {
                             if (data.length === 1) {
                                 return data[0].data;
                             } else {
                                 throw new Error('Invalid results');
                             }
                         })
-                        .then(function (tree) {
+                        .then(function(tree) {
                             // Build a list of references, then fetch the object info for them ...
                             if (tree.ws_refs) {
-                                refList = Object.keys(tree.ws_refs).map(function (key) {
-                                    return {ref: tree.ws_refs[key].g[0]};
+                                refList = Object.keys(tree.ws_refs).map(function(key) {
+                                    return { ref: tree.ws_refs[key].g[0] };
                                 });
                             }
-                            return Promise.all([tree, workspaceClient.get_object_info_new({objects: refList}).then(function (result) {
-                                    return result;
-                            }).catch(function (err) {
-                                console.error('NEW ERROR'); 
+                            return Promise.all([tree, workspaceClient.get_object_info_new({ objects: refList }).then(function(result) {
+                                return result;
+                            }).catch(function(err) {
+                                console.error('NEW ERROR');
                                 console.error(err);
                             })]);
                         })
-                        .spread(function (tree, objectInfoList) {
+                        .spread(function(tree, objectInfoList) {
                             // ... and then map them by their original ref.
                             var i;
                             for (i = 0; i < objectInfoList.length; i += 1) {
@@ -85,13 +83,13 @@ define([
                  * 
                  * Note: this is WITHIN the widget native layout.
                  */
-                layout: function (container) {
+                layout: function(container) {
                     var containerId = html.genId(),
                         canvasId = html.genId(),
                         div = html.tag('div'),
                         canvas = html.tag('canvas'),
-                        layout = div({id: containerId}, [
-                            canvas({id: canvasId, style: {maxHeight: (config.height || defaultHeight) - 85, overflow: 'scroll'}})
+                        layout = div({ id: containerId }, [
+                            canvas({ id: canvasId, style: { maxHeight: (config.height || defaultHeight) - 85, overflow: 'scroll' } })
                         ]);
                     return {
                         content: layout,
@@ -102,7 +100,7 @@ define([
                         }
                     };
                 },
-                render: function () {
+                render: function() {
                     var data = this.get('data'),
                         canvas = this.getPlace('canvas');
                     if (!data) {
@@ -110,7 +108,7 @@ define([
                     }
                     this.setTitle('Tree Data View');
                     new EasyTree(canvas.id, data.tree.tree, data.tree.default_node_labels,
-                        function (node) {
+                        function(node) {
                             var url;
                             if ((!data.tree.ws_refs || (!data.tree.ws_refs[node.id]))) {
                                 var nodeName = data.tree.default_node_labels[node.id];
@@ -128,7 +126,7 @@ define([
                                 window.open(url, '_blank');
                             }
                         },
-                        function (node) {
+                        function(node) {
                             if (node.id && node.id.indexOf('user') === 0) {
                                 return '#0000ff';
                             }
@@ -140,7 +138,7 @@ define([
     }
 
     return {
-        make: function (config) {
+        make: function(config) {
             return factory(config);
         }
     };
