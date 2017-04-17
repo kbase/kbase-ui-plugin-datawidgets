@@ -1,13 +1,11 @@
-/*global define*/
-/*jslint white:true,browser:true*/
 define([
     'bluebird',
-    'kb/common/html',
+    'kb_common/html',
     'plugins/datawidgets/modules/objectIdentity',
     './data',
     './view',
     './error'
-], function (Promise, html, objectIdentity, dataWidgetFactory, viewWidgetFactory, errorWidgetFactory) {
+], function(Promise, html, objectIdentity, dataWidgetFactory, viewWidgetFactory, errorWidgetFactory) {
     'use strict';
 
     function factory(config) {
@@ -52,51 +50,51 @@ define([
              */
             var objectRef = objectIdentity.makeObjectRef(params.workspaceId, params.objectId, params.objectVersion);
             return data.fetch({
-                config: {
-                    services: {
-                        workspace: {
-                            url: runtime.getConfig('services.workspace.url')
+                    config: {
+                        services: {
+                            workspace: {
+                                url: runtime.getConfig('services.workspace.url')
+                            }
                         }
-                    }
-                },
-                authorization: {
-                    token: runtime.service('session').getAuthToken()
-                },
-                objectRef: objectRef
-            })
-                .then(function (data) {
+                    },
+                    authorization: {
+                        token: runtime.service('session').getAuthToken()
+                    },
+                    objectRef: objectRef
+                })
+                .then(function(data) {
                     return view.update(data);
                 });
-//                .catch(function (err) {
-//                    // TODO: bulletproof error display here!!!!
-//                    error = errorWidgetFactory.make(config);
-//                    console.log('ERROR widget');
-//                    console.log(error);
-//                    container.innerHTML = '';
-//                    Promise.try(function () {
-//                        return error.setup(container);
-//                    })
-//                        .then(function () {
-//                            return error.start({});
-//                        })
-//                        .then(function () {
-//                            return error.update({
-//                                title: 'Error Rendering Widget',
-//                                message: 'There was a problem with this widget.',
-//                                error: err
-//                            });
-//                        })
-//                        .catch(function (err2) {
-//                            container.innerHTML = html.makePanel({
-//                                title: 'Error',
-//                                content: 'Error rendering the error widget'
-//                            });
-//                            console.log('ERROR!');
-//                            console.log('Error rendering the error widget');
-//                            console.log(err2);
-//                            console.log(err);
-//                        })
-//                });
+            //                .catch(function (err) {
+            //                    // TODO: bulletproof error display here!!!!
+            //                    error = errorWidgetFactory.make(config);
+            //                    console.log('ERROR widget');
+            //                    console.log(error);
+            //                    container.innerHTML = '';
+            //                    Promise.try(function () {
+            //                        return error.setup(container);
+            //                    })
+            //                        .then(function () {
+            //                            return error.start({});
+            //                        })
+            //                        .then(function () {
+            //                            return error.update({
+            //                                title: 'Error Rendering Widget',
+            //                                message: 'There was a problem with this widget.',
+            //                                error: err
+            //                            });
+            //                        })
+            //                        .catch(function (err2) {
+            //                            container.innerHTML = html.makePanel({
+            //                                title: 'Error',
+            //                                content: 'Error rendering the error widget'
+            //                            });
+            //                            console.log('ERROR!');
+            //                            console.log('Error rendering the error widget');
+            //                            console.log(err2);
+            //                            console.log(err);
+            //                        })
+            //                });
         }
 
         function stop() {
@@ -125,7 +123,7 @@ define([
     }
 
     return {
-        make: function (config) {
+        make: function(config) {
             return factory(config);
         }
     };

@@ -1,7 +1,4 @@
-/*global define*/
-/*jslint white:true,browser:true*/
-define([
-], function () {
+define([], function() {
     'use strict';
     /* singleton */
     function validateId(id) {

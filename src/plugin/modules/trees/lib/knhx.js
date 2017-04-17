@@ -59,28 +59,21 @@
 /********************************************
  ****** The New Hampshire format parser *****
  ********************************************/
-/*global
- define, console
- */
-/*jslint
- browser: true,
- white: true,
-bitwise: true
- */
 define([
-    './canvastext', 
+    './canvastext',
     './popit'
-], function (CanvasTextFunctions, popmenu) {
+], function(CanvasTextFunctions, popmenu) {
     'use strict';
+
     function kn_new_node() { // private method
-        return {parent: null, child: [], name: "", meta: "", d: -1.0, hl: false, hidden: false};
+        return { parent: null, child: [], name: "", meta: "", d: -1.0, hl: false, hidden: false };
     }
 
     function kn_add_node(str, l, tree, x) // private method
     {
-        var r, 
-            beg, 
-            end = 0, 
+        var r,
+            beg,
+            end = 0,
             z,
             i;
         z = kn_new_node();
@@ -127,8 +120,7 @@ define([
     }
 
     /* Parse a string in the New Hampshire format and return a pointer to the tree. */
-    function kn_parse(str)
-    {
+    function kn_parse(str) {
         var stack = new Array();
         var tree = {};
         tree.error = tree.n_tips = 0;
@@ -185,8 +177,7 @@ define([
      */
 
     /* convert a tree to the New Hampshire string */
-    function kn_write_nh(tree)
-    {
+    function kn_write_nh(tree) {
         // calculate the depth of each node
         tree.node[tree.node.length - 1].depth = 0;
         var i, j;
@@ -196,7 +187,8 @@ define([
         }
         // generate the string
         var str = '';
-        var cur_depth = 0, is_first = 1;
+        var cur_depth = 0,
+            is_first = 1;
         for (i = 0; i < tree.node.length; ++i) {
             var p = tree.node[i];
             var n_bra = p.depth - cur_depth;
@@ -230,14 +222,13 @@ define([
     }
 
     /* print the tree topology (for debugging only) */
-    function kn_check_tree(tree)
-    {
+    function kn_check_tree(tree) {
         document.write("<table border=1><tr><th>name<th>id<th>dist<th>x<th>y</tr>");
         var i;
         for (i = 0; i < tree.node.length; ++i) {
             var p = tree.node[i];
-            document.write("<tr>" + "<td>" + p.name + "<td>" + i + "<td>" + p.d
-                + "<td>" + p.x + "<td>" + p.y + "</tr>");
+            document.write("<tr>" + "<td>" + p.name + "<td>" + i + "<td>" + p.d +
+                "<td>" + p.x + "<td>" + p.y + "</tr>");
         }
         document.write("</table>");
     }
@@ -247,16 +238,15 @@ define([
      */
 
     /* Expand the tree into an array in the finishing order */
-    function kn_expand_node(root)
-    {
+    function kn_expand_node(root) {
         var node, stack;
         node = [];
         stack = [];
-        stack.push({p: root, i: 0});
-        for (; ; ) {
+        stack.push({ p: root, i: 0 });
+        for (;;) {
             while (stack[stack.length - 1].i !== stack[stack.length - 1].p.child.length && !stack[stack.length - 1].p.hidden) {
                 var q = stack[stack.length - 1];
-                stack.push({p: q.p.child[q.i], i: 0});
+                stack.push({ p: q.p.child[q.i], i: 0 });
             }
             node.push(stack.pop().p);
             if (stack.length > 0) {
@@ -269,8 +259,7 @@ define([
     }
 
     /* Count the number of leaves */
-    function kn_count_tips(tree)
-    {
+    function kn_count_tips(tree) {
         tree.n_tips = 0;
         var i;
         for (i = 0; i < tree.node.length; ++i) {
@@ -282,8 +271,7 @@ define([
     }
 
     /* Highlight: set node.hl for leaves matching "pattern" */
-    function kn_search_leaf(tree, pattern)
-    {
+    function kn_search_leaf(tree, pattern) {
         var i, p;
         for (i = 0; i < tree.node.length; ++i) {
             p = tree.node[i];
@@ -294,8 +282,7 @@ define([
     }
 
     /* Remove: delete a node and all its descendants */
-    function kn_remove_node(tree, node)
-    {
+    function kn_remove_node(tree, node) {
         var root = tree.node[tree.node.length - 1];
         if (node === root)
             return;
@@ -304,7 +291,8 @@ define([
         z.child.push(root);
         root.parent = z;
 
-        var p = node.parent, i;
+        var p = node.parent,
+            i;
         if (p.child.length === 2) { // then p will be removed
             var q, r = p.parent;
             i = (p.child[0] === node) ? 0 : 1;
@@ -335,8 +323,7 @@ define([
     }
 
     /* Move: prune the subtree descending from p and regragh it to the edge between q and its parent */
-    function kn_move_node(tree, p, q)
-    {
+    function kn_move_node(tree, p, q) {
         var root = tree.node[tree.node.length - 1];
         if (p === root)
             return null; // p cannot be root
@@ -372,8 +359,7 @@ define([
     }
 
     /* Reroot: put the root in the middle of node and its parent */
-    function kn_reroot(root, node, dist)
-    {
+    function kn_reroot(root, node, dist) {
         var i, d, tmp;
         var p, q, r, s, new_root;
         if (node === root)
@@ -435,8 +421,7 @@ define([
         return new_root;
     }
 
-    function kn_multifurcate(p)
-    {
+    function kn_multifurcate(p) {
         var i, par, idx, tmp, old_length;
         if (p.child.length === 0 || !p.parent)
             return;
@@ -458,16 +443,15 @@ define([
         }
     }
 
-    function kn_reorder(root)
-    {
-        sort_leaf = function (a, b) {
+    function kn_reorder(root) {
+        sort_leaf = function(a, b) {
             if (a.depth < b.depth)
                 return 1;
             if (a.depth > b.depth)
                 return -1;
             return String(a.name) < String(b.name) ? -1 : String(a.name) > String(b.name) ? 1 : 0;
         };
-        sort_weight = function (a, b) {
+        sort_weight = function(a, b) {
             return a.weight / a.n_tips - b.weight / b.n_tips;
         };
 
@@ -489,7 +473,8 @@ define([
         for (i = 0; i < node.length; ++i) {
             var q = node[i];
             if (q.child.length) { // internal
-                var j, n = 0, w = 0;
+                var j, n = 0,
+                    w = 0;
                 for (j = 0; j < q.child.length; ++j) {
                     n += q.child[j].n_tips;
                     w += q.child[j].weight;
@@ -506,11 +491,10 @@ define([
 
     /*
      ***** Functions for plotting a tree *****
-    */
+     */
 
     /* Calculate the coordinate of each node */
-    function kn_calxy(tree, is_real)
-    {
+    function kn_calxy(tree, is_real) {
         var i, j, scale;
         // calculate y
         scale = tree.n_tips - 1;
@@ -554,8 +538,7 @@ define([
         return is_real;
     }
 
-    function kn_get_node(tree, conf, x, y)
-    {
+    function kn_get_node(tree, conf, x, y) {
         if (conf.is_circular) {
             for (var i = 0; i < tree.node.length; ++i) {
                 var p = tree.node[i];
@@ -578,8 +561,7 @@ define([
     }
 
     /* Initialize parameters for tree plotting */
-    function kn_init_conf()
-    {
+    function kn_init_conf() {
         var conf = new Object();
         conf.c_box = new Array();
         conf.width = 1000;
@@ -595,7 +577,7 @@ define([
         conf.c_hl = "rgb(255, 180, 180)";
         conf.c_hidden = "rgb(0,200,0)";
         conf.c_regex = "rgb(0,128,0)";
-//  conf.regex = ':S=([^:\\]]+)';
+        //  conf.regex = ':S=([^:\\]]+)';
         conf.regex = ':B=([^:\\]]+)';
         conf.xskip = 3.0;
         conf.yskip = 14;
@@ -609,14 +591,13 @@ define([
     }
 
     /* Plot the tree in the "canvas". Both node.x and node.y MUST BE precomputed by kn_calxy */
-    function kn_plot_core(canvas, tree, conf)
-    {
+    function kn_plot_core(canvas, tree, conf) {
         if (conf.is_circular) {
             kn_plot_core_O(canvas, tree, conf);
             return;
         }
         var ctx = canvas.getContext("2d");
-//  ctx.font = "10px Sans";
+        //  ctx.font = "10px Sans";
         ctx.strokeStyle = ctx.fillStyle = "white";
         ctx.fillRect(0, 0, conf.width, conf.height);
         CanvasTextFunctions.enable(ctx);
@@ -656,7 +637,7 @@ define([
                     ctx.fillRect(p.x * real_x + conf.xskip * 2 + shift_x, p.y * real_y + shift_y - conf.fontsize * .8,
                         tmp, conf.fontsize * 1.5);
                 }
-//          ctx.fillText(p.name, p.x * real_x + conf.xskip * 2 + shift_x, p.y * real_y + shift_y + conf.fontsize / 3);
+                //          ctx.fillText(p.name, p.x * real_x + conf.xskip * 2 + shift_x, p.y * real_y + shift_y + conf.fontsize / 3);
                 ctx.drawText(conf.font, conf.fontsize, p.x * real_x + conf.xskip * 2 + shift_x,
                     p.y * real_y + shift_y + conf.fontsize / 3, p.name);
             }
@@ -731,8 +712,7 @@ define([
         }
     }
 
-    function kn_plot_core_O(canvas, tree, conf)
-    {
+    function kn_plot_core_O(canvas, tree, conf) {
         var ctx = canvas.getContext("2d");
         ctx.strokeStyle = ctx.fillStyle = "white";
         ctx.fillRect(0, 0, conf.width, conf.height);
@@ -747,7 +727,8 @@ define([
                 max_namelen = tmp;
         }
         // set transformation and estimate the font size
-        var real_r, full = 2 * Math.PI * (350 / 360), fontsize;
+        var real_r, full = 2 * Math.PI * (350 / 360),
+            fontsize;
         fontsize = (conf.width / 2 - conf.xmargin - 1 * tree.n_tips / full) / (max_namelen / conf.fontsize + tree.n_tips / full);
         if (fontsize > conf.fontsize)
             fontsize = conf.fontsize;
@@ -806,7 +787,8 @@ define([
         ctx.lineTo(root.x * real_r * Math.cos(root.y * full), root.x * real_r * Math.sin(root.y * full));
         for (i = 0; i < tree.node.length - 1; ++i) {
             var p = tree.node[i];
-            var cos = Math.cos(p.y * full), sin = Math.sin(p.y * full);
+            var cos = Math.cos(p.y * full),
+                sin = Math.sin(p.y * full);
             ctx.moveTo(p.parent.x * real_r * cos, p.parent.x * real_r * sin);
             ctx.lineTo(p.x * real_r * cos, p.x * real_r * sin);
         }
@@ -819,7 +801,8 @@ define([
             var p = tree.node[i];
             if (p.child.length)
                 continue;
-            var cos = Math.cos(p.y * full), sin = Math.sin(p.y * full);
+            var cos = Math.cos(p.y * full),
+                sin = Math.sin(p.y * full);
             ctx.moveTo(p.x * real_r * cos, p.x * real_r * sin);
             ctx.lineTo(real_r * cos, real_r * sin);
         }
@@ -842,8 +825,7 @@ define([
     }
 
     /* Plot the tree "str" in the Newick format in the "canvas" */
-    function kn_plot_str(canvas, str, conf)
-    {
+    function kn_plot_str(canvas, str, conf) {
         var tree = kn_parse(str);
         if (tree.error)
             return tree;
@@ -869,15 +851,15 @@ define([
      * Event handler *
      *****************/
 
-    function KN_Actions (canvas, textarea, kn_g_conf, kn_g_tree) {
+    function KN_Actions(canvas, textarea, kn_g_conf, kn_g_tree) {
         var self = this;
         var id;
 
-        this.set_id = function (_id) {
+        this.set_id = function(_id) {
             id = _id;
         };
 
-        this.plot = function (str) {
+        this.plot = function(str) {
             var time_beg = new Date().getTime();
             if (str) {
                 var tree = kn_plot_str(canvas, str, kn_g_conf);
@@ -919,11 +901,11 @@ define([
 
         };
 
-        this.plot_str = function () {
+        this.plot_str = function() {
             this.plot(textarea.value);
         };
 
-        this.undo_redo = function () {
+        this.undo_redo = function() {
             var tmp = kn_g_conf.old_nh;
             kn_g_conf.old_nh = textarea.value;
             textarea.value = tmp;
@@ -932,18 +914,20 @@ define([
             kn_plot_core(canvas, kn_g_tree, kn_g_conf);
         };
 
-        var set_undo = function (conf, str) {
+        var set_undo = function(conf, str) {
             conf.old_nh = textarea.value;
             textarea.value = str;
         };
 
-        this.get = function (x, y) {
+        this.get = function(x, y) {
             var id = kn_get_node(kn_g_tree, kn_g_conf, x, y);
             return (id >= 0 && id < kn_g_tree.node.length) ? id : -1;
         };
 
-        this.swap = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.swap = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length && tree.node[i].child.length) {
                 var p = tree.node[i];
                 var q = p.child[0];
@@ -959,8 +943,10 @@ define([
             }
         };
 
-        this.sort = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.sort = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length && tree.node[i].child.length) {
                 kn_reorder(tree.node[i]);
                 tree.node = kn_expand_node(tree.node[tree.node.length - 1]);
@@ -972,8 +958,10 @@ define([
             }
         };
 
-        this.reroot = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.reroot = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length) {
                 var new_root = kn_reroot(tree.node[tree.node.length - 1], tree.node[i], -1.0);
                 tree.node = kn_expand_node(new_root);
@@ -984,8 +972,10 @@ define([
             }
         };
 
-        this.collapse = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.collapse = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length && tree.node[i].child.length) {
                 tree.node[i].hidden = !tree.node[i].hidden;
                 var nn = tree.node.length;
@@ -998,8 +988,10 @@ define([
             }
         };
 
-        this.remove = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.remove = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length) {
                 var new_root = kn_remove_node(tree, tree.node[i]);
                 tree.node = kn_expand_node(new_root);
@@ -1008,12 +1000,14 @@ define([
                 conf.is_real = kn_calxy(tree, conf.is_real);
                 kn_plot_core(canvas, tree, conf);
                 set_undo(conf, kn_write_nh(tree));
-//          document.getElementById("n_leaves").innerHTML = "#leaves: "+tree.n_tips+";";
+                //          document.getElementById("n_leaves").innerHTML = "#leaves: "+tree.n_tips+";";
             }
         };
 
-        this.multifurcate = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.multifurcate = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length && tree.node[i].child.length) {
                 kn_multifurcate(tree.node[i]);
                 tree.node = kn_expand_node(tree.node[tree.node.length - 1]);
@@ -1036,8 +1030,10 @@ define([
             }
         };
 
-        this.move = function () {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
+        this.move = function() {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
             if (i < tree.node.length) {
                 if (tree.active_node !== null && tree.active_node < tree.node.length) {
                     //alert(tree.active_node + " -> " + i);
@@ -1068,10 +1064,20 @@ define([
                 move_clear_mark(tree, conf);
         };
 
-        this.highlight = function (color) {
-            var tree = kn_g_tree, conf = kn_g_conf, i = id;
-            var lookup = {white: '#FFFFFF', red: '#FFD8D0', green: '#D8FFC0', blue: '#C0D8FF',
-                yellow: '#FFFFC8', pink: '#FFD8FF', cyan: '#D8FFFF', none: 'none'};
+        this.highlight = function(color) {
+            var tree = kn_g_tree,
+                conf = kn_g_conf,
+                i = id;
+            var lookup = {
+                white: '#FFFFFF',
+                red: '#FFD8D0',
+                green: '#D8FFC0',
+                blue: '#C0D8FF',
+                yellow: '#FFFFC8',
+                pink: '#FFD8FF',
+                cyan: '#D8FFFF',
+                none: 'none'
+            };
             if (lookup[color])
                 color = lookup[color];
             if (i < tree.node.length) {
@@ -1158,28 +1164,28 @@ define([
     };
 
 
-    var knhx_init = function (canvasId, textareaId, kn_g_conf, kn_g_tree) {
+    var knhx_init = function(canvasId, textareaId, kn_g_conf, kn_g_tree) {
         var canvas = document.getElementById(canvasId);
         var textarea = document.getElementById(textareaId);
-        
+
         var kn_actions = new KN_Actions(canvas, textarea, kn_g_conf, kn_g_tree);
-        
-        var kn_actions_html = '<h4>Actions</h4>'
-            + '<div id="knhx_action_menu_'+canvasId+'">' 
-            + '<a href="javascript:void(0);" xonClick="kn_actions.swap();">Swap</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.sort();">Ladderize</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.collapse();">Collapse</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.reroot();">Reroot</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.move();">Move</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.multifurcate();">Multifurcate</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.remove();">Remove</a><br>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'none\');" class="alt">&nbsp;</a>'
-            + '<a href="javascript:void(0);" xclass="alt" xonClick="kn_actions.highlight(\'red\');" style="background-color:#FFD8D0;">&nbsp;</a>'
-            + '<a href="javascript:void(0);" class="alt" xonClick="kn_actions.highlight(\'green\');" style="background-color:#D0FFC0;">&nbsp;</a>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'blue\');" class="alt" style="background-color:#C0D8FF;">&nbsp;</a>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'yellow\');" class="alt" style="background-color:#FFFFC8;">&nbsp;</a>'
-            + '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'cyan\');" class="alt" style="background-color:#D8FFFF;">&nbsp;</a>'
-            + '</div>';
+
+        var kn_actions_html = '<h4>Actions</h4>' +
+            '<div id="knhx_action_menu_' + canvasId + '">' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.swap();">Swap</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.sort();">Ladderize</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.collapse();">Collapse</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.reroot();">Reroot</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.move();">Move</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.multifurcate();">Multifurcate</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.remove();">Remove</a><br>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'none\');" class="alt">&nbsp;</a>' +
+            '<a href="javascript:void(0);" xclass="alt" xonClick="kn_actions.highlight(\'red\');" style="background-color:#FFD8D0;">&nbsp;</a>' +
+            '<a href="javascript:void(0);" class="alt" xonClick="kn_actions.highlight(\'green\');" style="background-color:#D0FFC0;">&nbsp;</a>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'blue\');" class="alt" style="background-color:#C0D8FF;">&nbsp;</a>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'yellow\');" class="alt" style="background-color:#FFFFC8;">&nbsp;</a>' +
+            '<a href="javascript:void(0);" xonClick="kn_actions.highlight(\'cyan\');" class="alt" style="background-color:#D8FFFF;">&nbsp;</a>' +
+            '</div>';
 
         function ev_canvas(ev) {
             if (ev.layerX || ev.layerX === 0) { // Firefox
@@ -1205,7 +1211,7 @@ define([
                     kn_actions.set_id(id);
                     if (kn_g_tree.active_node === null) {
                         console.log('i want to pop');
-                        popmenu.show(ev, kn_actions_html, "98px", function (e) {
+                        popmenu.show(ev, kn_actions_html, "98px", function(e) {
                             console.log('clicked!');
                         });
                     } else {
@@ -1220,7 +1226,7 @@ define([
         } else {
             canvas.attachEvent('onclick', ev_canvas);
         }
-        
+
         return this;
 
         /*
@@ -1253,18 +1259,19 @@ define([
             document.getElementsByTagName('head')[0].removeChild(script_id);
         }
         document.getElementsByTagName('head')[0].appendChild(script);
-//  document.getElementById('nhx').value = jsurl;
+        //  document.getElementById('nhx').value = jsurl;
     };
 
     function xss_query(url) {
         document.getElementById('nhx').value = "Please wait while the tree being retrieved...\n";
-        xss_query_core("http://query.yahooapis.com/v1/public/yql?callback=xss_callback&q="
-            + encodeURIComponent('select * from html where url="' + url + '"'));
+        xss_query_core("http://query.yahooapis.com/v1/public/yql?callback=xss_callback&q=" +
+            encodeURIComponent('select * from html where url="' + url + '"'));
     }
 
     function xss_callback(data) {
         var str = data.results[0];
-        var beg = str.indexOf('('), end = str.lastIndexOf(')');
+        var beg = str.indexOf('('),
+            end = str.lastIndexOf(')');
         document.getElementById('nhx').value = str.substr(beg, end - beg + 1).replace(/&amp;/ig, "&")
             .replace(/\n +/g, "\n").replace(/&quot;/, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">");
     }

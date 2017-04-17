@@ -1,11 +1,9 @@
-/*global define*/
-/*jslint white:true,browser:true*/
 define([
     'jquery',
     'numeral',
-    'kb/common/html',
+    'kb_common/html',
     'datatables_bootstrap'
-], function ($, numeral, html) {
+], function($, numeral, html) {
     'use strict';
 
     function overviewTable(input) {
@@ -13,7 +11,8 @@ define([
             columns: ['KBase ID', 'Name', 'Object ID', 'Source', 'Source ID', 'Type'],
             rows: [
                 [input.data.contigSet.id, input.data.contigSet.name, input.params.objectId,
-                    input.data.contigSet.source, input.data.contigSet.source_id, input.data.contigSet.type]
+                    input.data.contigSet.source, input.data.contigSet.source_id, input.data.contigSet.type
+                ]
             ],
             classes: ['table', 'table-striped', 'table-bordered']
         };
@@ -21,11 +20,11 @@ define([
     }
 
     function contigsTable(input) {
-        var contigsData = input.data.contigSet.contigs.map(function (contig) {
-            return [
-                contig.id, contig.length
-            ];
-        }),
+        var contigsData = input.data.contigSet.contigs.map(function(contig) {
+                return [
+                    contig.id, contig.length
+                ];
+            }),
             table = {
                 columns: ['Contig name', 'Length'],
                 rows: contigsData,
@@ -38,8 +37,7 @@ define([
         var tabId = html.genId(),
             tabSet = {
                 id: tabId,
-                tabs: [
-                    {
+                tabs: [{
                         label: 'Overview',
                         name: 'overview',
                         content: overviewTable(input)
@@ -52,41 +50,44 @@ define([
                 ]
             };
         container.innerHTML = html.makeTabs(tabSet);
-        
-        (function () {
+
+        (function() {
             var tableConfig = {
-                sPaginationType: 'full_numbers',
-                iDisplayLength: 10,
-                columnDefs: [
-                    {width: '80%', targets: 0},
-                    {width: '20%', targets: 1},
-                    {render: function (data, type, row) {
-                            return numeral(data).format('0,0');
-                        }, targets: 1},
-                    {class: 'text-right', targets: 1}
-                ],
-                initComplete: function () {
-                    var api = this.api(),
-                        rowCount = api.data().length,
-                        pageSize = api.page.len(),
-                        wrapper = api.settings()[0].nTableWrapper;
-                    if (rowCount <= pageSize) {
-                        $(wrapper).find('.dataTables_length').hide();
-                        $(wrapper).find('.dataTables_filter').hide();
-                        $(wrapper).find('.dataTables_paginate').hide();
-                        $(wrapper).find('.dataTables_info').hide();
+                    sPaginationType: 'full_numbers',
+                    iDisplayLength: 10,
+                    columnDefs: [
+                        { width: '80%', targets: 0 },
+                        { width: '20%', targets: 1 },
+                        {
+                            render: function(data, type, row) {
+                                return numeral(data).format('0,0');
+                            },
+                            targets: 1
+                        },
+                        { class: 'text-right', targets: 1 }
+                    ],
+                    initComplete: function() {
+                        var api = this.api(),
+                            rowCount = api.data().length,
+                            pageSize = api.page.len(),
+                            wrapper = api.settings()[0].nTableWrapper;
+                        if (rowCount <= pageSize) {
+                            $(wrapper).find('.dataTables_length').hide();
+                            $(wrapper).find('.dataTables_filter').hide();
+                            $(wrapper).find('.dataTables_paginate').hide();
+                            $(wrapper).find('.dataTables_info').hide();
+                        }
+                    },
+                    oLanguage: {
+                        sSearch: 'Search contig:',
+                        sEmptyTable: 'No contigs found.'
                     }
                 },
-                oLanguage: {
-                    sSearch: 'Search contig:',
-                    sEmptyTable: 'No contigs found.'
-                }
-            },
-            $node = $('#' + tabId + ' .tab-content [data-name="contigs"] table');
+                $node = $('#' + tabId + ' .tab-content [data-name="contigs"] table');
             $node.dataTable(tableConfig);
         }());
     }
-    
+
     function renderWaiting(container) {
         container.innerHTML = html.loading('Loading contigset data');
     }
@@ -153,7 +154,7 @@ define([
     }
 
     return {
-        make: function (config) {
+        make: function(config) {
             return factory(config);
         }
     };
