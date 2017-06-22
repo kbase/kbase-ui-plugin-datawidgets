@@ -4,7 +4,10 @@ define([
     'kb_common/html',
     'kb_service/client/workspace',
     'kb_widget/legacy/kbaseTabs',
-    '../objectIdentity'
+    '../objectIdentity',
+
+    'datatables_bootstrap'
+
 ], function (
     $,
     d3,
@@ -434,7 +437,7 @@ define([
             });
             var objectRef = objectIdentity.makeObjectRef(params.workspaceId, params.objectId, params.objectVersion);
 
-            workspaceClient.get_objects([{
+            return workspaceClient.get_objects([{
                     ref: objectRef
                 }])
                 .then(function (result) {
@@ -445,7 +448,7 @@ define([
                     renderError(err);
                 });
 
-            container.innerHTML = 'started... ' + objectRef;
+            // container.innerHTML = 'started... ' + objectRef;
         }
 
         function stop() {
