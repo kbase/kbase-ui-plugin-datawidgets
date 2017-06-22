@@ -42,7 +42,6 @@ define([
         };
 
         function renderOverviewTab(data, pref) {
-            console.log('render overview', data);
             var parameters = data.BlastOutput_param.Parameters;
             var db = data.BlastOutput_db;
             var query_info = data.BlastOutput_iterations.Iteration[0]['Iteration_query-def'];
@@ -266,11 +265,11 @@ define([
             svg.append('g')
                 .attr('class', 'axis') //Assign "axis" class
                 .attr('transform', 'translate(' + 10 + ',' + 10 + ')')
-                .call(xAxis);            
+                .call(xAxis);
         }
 
         function renderSequenceAlignmentTab(data, pref) {
-            function paddingx (n) {
+            function paddingx(n) {
                 var z = ' ';
                 n = n + '';
                 var width = 8;
@@ -436,15 +435,15 @@ define([
             var objectRef = objectIdentity.makeObjectRef(params.workspaceId, params.objectId, params.objectVersion);
 
             workspaceClient.get_objects([{
-                ref: objectRef
-            }])
-            .then(function (result) {
-                // console.log('GOT', result);
-                render(result[0].data);
-            })
-            .catch(function (err) {
-                renderError(err);
-            });
+                    ref: objectRef
+                }])
+                .then(function (result) {
+                    // console.log('GOT', result);
+                    render(result[0].data);
+                })
+                .catch(function (err) {
+                    renderError(err);
+                });
 
             container.innerHTML = 'started... ' + objectRef;
         }
