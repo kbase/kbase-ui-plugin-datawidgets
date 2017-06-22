@@ -119,20 +119,20 @@ install:
                     widget:
                         name: kb_datawidgets_blastOutput
                     panel: true
-        -
-            type:
-                module: GenomeUtil
-                name: BLAST_output
-            icon:
-                type: fontAwesome
-                classes: ['fa-align-justify']
-            viewers:
-                -
-                    title: Data View
-                    default: true
-                    widget:
-                        name: kb_datawidgets_blastOutput
-                    panel: true
+        # -
+        #     type:
+        #         module: GenomeUtil
+        #         name: BLAST_output
+        #     icon:
+        #         type: fontAwesome
+        #         classes: ['fa-align-justify']
+        #     viewers:
+        #         -
+        #             title: Data View
+        #             default: true
+        #             widget:
+        #                 name: kb_datawidgets_blastOutput
+        #             panel: true
          # TREES
         
         #-
